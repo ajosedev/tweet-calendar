@@ -10,6 +10,8 @@ api = tweepy.API(auth)
 twitter_name = "dog_feelings"
 count = 600
 
+# Get a bunch of tweets for a given user
+# Gets more than 365 tweets, as they are randomised and shuffled
 # Saves tweets to a JSON file, as we do not need to constantly update them
 if __name__ == "__main__":
     json_tweets = []
