@@ -6,18 +6,16 @@ from datetime import date, timedelta
 
 # Quote of the day calendar
 
-# Iterate over every tweet
-# Ignore tweets with links in them?
-
 # Create a page (in a pdf?) with a single tweet
 #   Have different templates
-# Show date (e.g. Jan 01)
+#   4 tweets per page
+
 # Figure out design for screen
 
 if __name__ == "__main__":
     verbose = 'verbose' in sys.argv
-    count = 0
 
+    count = 0
     year = 2019
 
     start_date = date(year, 1, 1)
@@ -26,6 +24,7 @@ if __name__ == "__main__":
     date = start_date
 
     with open('tweets.json') as f:
+        # Load tweets from file
         tweets = json.load(f)
         # Shuffle tweets into random order
         random.shuffle(tweets)
