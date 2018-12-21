@@ -2,6 +2,7 @@ import json
 import random
 import sys
 from pprint import pprint
+from datetime import date, timedelta
 
 # Quote of the day calendar
 
@@ -16,12 +17,25 @@ from pprint import pprint
 if __name__ == "__main__":
     verbose = 'verbose' in sys.argv
     count = 0
+
+    year = 2019
+
+    start_date = date(year, 1, 1)
+    end_date = date(year, 12, 31)
+    delta = timedelta(days=1)
+    date = start_date
+
     with open('tweets.json') as f:
         tweets = json.load(f)
         # Shuffle tweets into random order
         random.shuffle(tweets)
 
-        for tweet in tweets:
+        # Iterate over dates
+        while date <= end_date:
+            tweet = tweets[count]
+            # Increment count after accessing tweet, incase tweet is unwanted
+            # Count may increase without date increasing
+            count += 1
 
             # Take out links
             if 'http' in tweet['full_text']:
@@ -39,8 +53,8 @@ if __name__ == "__main__":
             if tweet['in_reply_to_status_id'] is not None:
                 continue
 
-            print(tweet['full_text'])
-            count += 1
+            print('{} - {}'.format(date.strftime("%a, %d %b"), tweet['full_text']))
+            date += delta
 
         if verbose:
             print('Count: {}'.format(count))
