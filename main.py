@@ -115,7 +115,8 @@ if __name__ == "__main__":
                 continue
 
             write_tweet(date, tweet['full_text'], rotate)
-            rotate = not rotate
+            if rotate_image:
+                rotate = not rotate
             date += delta
 
     if verbose:
