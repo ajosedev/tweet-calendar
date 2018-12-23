@@ -11,13 +11,21 @@ from PIL import Image, ImageDraw, ImageFont
 # Create a page (in a pdf?) with a single tweet
 #   4 tweets per page
 
+# Copy
 twitter_name = 'Thoughts of dog'
 twitter_handle = 'dog_feelings'
 
+# Fonts
 date_num_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Black.ttf', 100)
 date_day_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Bold.ttf', 40)
 tweet_heading_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Bold.ttf', 30)
 tweet_body_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Regular.ttf', 30)
+
+# Colours
+colour_date_num = (0, 0, 0)
+colour_date_day = (128, 128, 128)
+colour_user = (101, 119, 134)
+colour_body = (20, 23, 26)
 
 def write_tweet(date, tweet):
     avatar = Image.open('avatar.png')
@@ -29,16 +37,10 @@ def write_tweet(date, tweet):
     x_text = 160
     y_text = 200
 
-    # Colours
-    colour_head = (0, 0, 0)
-    colour_date = (128, 128, 128)
-    colour_user = (101, 119, 134)
-    colour_body = (20, 23, 26)
-
     # Write date
-    draw.text((40, y_start), date.strftime('%d'), fill=colour_head, font=date_num_font, align='right')
-    draw.text((x_text, 35), date.strftime('%A'), fill=colour_date, font=date_day_font)
-    draw.text((x_text, 75), date.strftime('%b'), fill=colour_date, font=date_day_font)
+    draw.text((40, y_start), date.strftime('%d'), fill=colour_date_num, font=date_num_font, align='right')
+    draw.text((x_text, 35), date.strftime('%A'), fill=colour_date_day, font=date_day_font)
+    draw.text((x_text, 75), date.strftime('%b'), fill=colour_date_day, font=date_day_font)
 
     # Write tweet header
     draw.text((x_text, 165), '{}'.format(twitter_name), fill=colour_body, font=tweet_heading_font)
@@ -55,7 +57,7 @@ def write_tweet(date, tweet):
 
     # Save image
     print('Saving...')
-    txt.paste(avatar, (42, 165))
+    txt.paste(avatar, (42, 165)) # Assumes the avatar is styled correctly
     txt.save('images/{}.png'.format(date.strftime('%d-%m')))
 
 if __name__ == "__main__":
