@@ -27,10 +27,10 @@ colour_date_day = (128, 128, 128)
 colour_user = (101, 119, 134)
 colour_body = (20, 23, 26)
 
-def write_tweet(date, tweet):
-    txt = Image.new('RGBA', (1400, 1000), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
-    draw = ImageDraw.Draw(txt)
-    draw.rectangle([(1, 1), (1399, 999)], fill=None, outline='black')
+def write_tweet(date, tweet, rotate):
+    image = Image.new('RGBA', (1500, 1100), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
+    draw = ImageDraw.Draw(image)
+    draw.rectangle([(1, 1), (1499, 1099)], fill=None, outline='black')
 
     # Set start 'margins'
     y_start = 60
@@ -55,17 +55,28 @@ def write_tweet(date, tweet):
         draw.text((x_text, y_text), line, fill=colour_body, font=tweet_body_font)
         y_text += height
 
+    # Add avatar (assumes the image is circular)
+    avatar = Image.open('avatar.png')
+    avatar.thumbnail((180, 180))
+    image.paste(avatar, (112, y_start + 290))
+
+    # Rotate image (if necessary)
+    if rotate:
+        image = image.rotate(180)
+
     # Save image
     print('Saving...')
-    avatar = Image.open('avatar.png') # Assumes the image is circular
-    avatar.thumbnail((180, 180))
-    txt.paste(avatar, (112, y_start + 290))
-    txt.save('images/{}.png'.format(date.strftime('%d-%m')))
+    image.save('images/{}.png'.format(date.strftime('%d-%m')))
 
 if __name__ == "__main__":
     verbose = 'verbose' in sys.argv
+    # Can rotate image to aid in printing margins
+    # Theory being that if you are printing 4 tweets on a single A4 page, this
+    # will help the margins be more consistent
+    rotate_image = 'rotate' in sys.argv
 
     count = 0
+    rotate = False
     year = 2019
 
     start_date = date(year, 1, 1)
@@ -81,7 +92,7 @@ if __name__ == "__main__":
 
         # Iterate over dates
         # while date <= end_date:
-        while count <= 4:
+        while count < 4:
             tweet = tweets[count]
             # Increment count after accessing tweet, incase tweet is unwanted
             # Count may increase without date increasing
@@ -103,7 +114,8 @@ if __name__ == "__main__":
             if tweet['in_reply_to_status_id'] is not None:
                 continue
 
-            write_tweet(date, tweet['full_text'])
+            write_tweet(date, tweet['full_text'], rotate)
+            rotate = not rotate
             date += delta
 
     if verbose:
