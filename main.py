@@ -34,7 +34,7 @@ def write_tweet(date, tweet):
 
     # Set start 'margins'
     y_start = 20
-    x_text = 160
+    x_text = 165
     y_text = 200
 
     # Write date
@@ -44,7 +44,7 @@ def write_tweet(date, tweet):
 
     # Write tweet header
     draw.text((x_text, 165), '{}'.format(twitter_name), fill=colour_body, font=tweet_heading_font)
-    draw.text((390, 165), '@{}'.format(twitter_handle), fill=colour_user, font=tweet_body_font)
+    draw.text((395, 165), '@{}'.format(twitter_handle), fill=colour_user, font=tweet_body_font)
 
     # Write tweet content
     lines = textwrap.wrap(tweet, width=35)
