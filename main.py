@@ -11,44 +11,52 @@ from PIL import Image, ImageDraw, ImageFont
 # Create a page (in a pdf?) with a single tweet
 #   4 tweets per page
 
-twitter_name = 'dog_feelings'
+twitter_name = 'Thoughts of dog'
+twitter_handle = 'dog_feelings'
 
-font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 30)
-font2 = ImageFont.truetype('/Library/Fonts/Arial Black.ttf', 100)
-font3 = ImageFont.truetype('/Library/Fonts/Arial Black.ttf', 40)
+date_num_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Black.ttf', 100)
+date_day_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Bold.ttf', 40)
+tweet_heading_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Bold.ttf', 30)
+tweet_body_font = ImageFont.truetype('/Users/andrew/Library/Fonts/Roboto-Regular.ttf', 30)
 
 def write_tweet(date, tweet):
-    img = Image.new('RGB', (877, 620), 'white')
-    draw = ImageDraw.Draw(img)
+    avatar = Image.open('avatar.png')
+    txt = Image.new('RGBA', (800, 500), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
+    draw = ImageDraw.Draw(txt)
 
     # Set start 'margins'
-    x_start = 100
-    y_start = 80
+    y_start = 20
+    x_text = 160
+    y_text = 200
+
+    # Colours
+    colour_head = (0, 0, 0)
+    colour_date = (128, 128, 128)
+    colour_user = (101, 119, 134)
+    colour_body = (20, 23, 26)
 
     # Write date
-    date_num = date.strftime('%d')
-    draw.text((x_start, y_start), date_num, fill='black', font=font2)
-    date_num_width, _ = draw.textsize(date_num, font=font2)
-    draw.text((x_start + date_num_width, 100), date.strftime('%A'), fill='red', font=font3)
-    draw.text((x_start + date_num_width, 145), date.strftime('%b'), fill='blue', font=font3)
+    draw.text((40, y_start), date.strftime('%d'), fill=colour_head, font=date_num_font, align='right')
+    draw.text((x_text, 35), date.strftime('%A'), fill=colour_date, font=date_day_font)
+    draw.text((x_text, 75), date.strftime('%b'), fill=colour_date, font=date_day_font)
+
+    # Write tweet header
+    draw.text((x_text, 165), '{}'.format(twitter_name), fill=colour_body, font=tweet_heading_font)
+    draw.text((390, 165), '@{}'.format(twitter_handle), fill=colour_user, font=tweet_body_font)
 
     # Write tweet content
-    x_text = x_start
-    y_text = 250
-    lines = textwrap.wrap(tweet, width=45)
+    lines = textwrap.wrap(tweet, width=35)
 
     # TODO - handle when line length is too long (e.g. when all caps)
     for line in lines:
-        _, height = font.getsize(line)
-        draw.text((x_text, y_text), line, fill='black', font=font)
+        _, height = tweet_body_font.getsize(line)
+        draw.text((x_text, y_text), line, fill=colour_body, font=tweet_body_font)
         y_text += height
-
-    # Write author (hard coded)
-    draw.text((x_start + 40, y_text + 40), '- @{}'.format(twitter_name), fill='green', font=font)
 
     # Save image
     print('Saving...')
-    img.save('images/{}.png'.format(date.strftime('%d-%m')))
+    txt.paste(avatar, (42, 165))
+    txt.save('images/{}.png'.format(date.strftime('%d-%m')))
 
 if __name__ == "__main__":
     verbose = 'verbose' in sys.argv
