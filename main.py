@@ -29,22 +29,23 @@ colour_body = (20, 23, 26)
 
 def write_tweet(date, tweet):
     avatar = Image.open('avatar.png')
-    txt = Image.new('RGBA', (800, 500), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
+    txt = Image.new('RGBA', (750, 500), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
     draw = ImageDraw.Draw(txt)
+    draw.rectangle([(1, 1), (749, 499)], fill=None, outline='black')
 
     # Set start 'margins'
-    y_start = 20
+    y_start = 30
     x_text = 165
-    y_text = 200
+    y_text = y_start + 180
 
     # Write date
     draw.text((40, y_start), date.strftime('%d'), fill=colour_date_num, font=date_num_font, align='right')
-    draw.text((x_text, 35), date.strftime('%A'), fill=colour_date_day, font=date_day_font)
-    draw.text((x_text, 75), date.strftime('%b'), fill=colour_date_day, font=date_day_font)
+    draw.text((x_text, y_start + 15), date.strftime('%A'), fill=colour_date_day, font=date_day_font)
+    draw.text((x_text, y_start + 55), date.strftime('%b'), fill=colour_date_day, font=date_day_font)
 
     # Write tweet header
-    draw.text((x_text, 165), '{}'.format(twitter_name), fill=colour_body, font=tweet_heading_font)
-    draw.text((395, 165), '@{}'.format(twitter_handle), fill=colour_user, font=tweet_body_font)
+    draw.text((x_text, y_start + 145), '{}'.format(twitter_name), fill=colour_body, font=tweet_heading_font)
+    draw.text((395, y_start + 145), '@{}'.format(twitter_handle), fill=colour_user, font=tweet_body_font)
 
     # Write tweet content
     lines = textwrap.wrap(tweet, width=35)
@@ -57,7 +58,7 @@ def write_tweet(date, tweet):
 
     # Save image
     print('Saving...')
-    txt.paste(avatar, (42, 165)) # Assumes the avatar is styled correctly
+    txt.paste(avatar, (42, y_start + 145)) # Assumes the avatar is styled correctly
     txt.save('images/{}.png'.format(date.strftime('%d-%m')))
 
 if __name__ == "__main__":
@@ -79,7 +80,7 @@ if __name__ == "__main__":
 
         # Iterate over dates
         # while date <= end_date:
-        while count <= 0:
+        while count <= 4:
             tweet = tweets[count]
             # Increment count after accessing tweet, incase tweet is unwanted
             # Count may increase without date increasing
