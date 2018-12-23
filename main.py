@@ -28,7 +28,6 @@ colour_user = (101, 119, 134)
 colour_body = (20, 23, 26)
 
 def write_tweet(date, tweet):
-    avatar = Image.open('avatar.png')
     txt = Image.new('RGBA', (1400, 1000), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
     draw = ImageDraw.Draw(txt)
     draw.rectangle([(1, 1), (1399, 999)], fill=None, outline='black')
@@ -58,7 +57,9 @@ def write_tweet(date, tweet):
 
     # Save image
     print('Saving...')
-    txt.paste(avatar, (84, y_start + 290)) # Assumes the avatar is styled correctly
+    avatar = Image.open('avatar.png') # Assumes the image is circular
+    avatar.thumbnail((180, 180))
+    txt.paste(avatar, (112, y_start + 290))
     txt.save('images/{}.png'.format(date.strftime('%d-%m')))
 
 if __name__ == "__main__":
