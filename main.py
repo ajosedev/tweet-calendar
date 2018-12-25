@@ -28,9 +28,10 @@ colour_user = (101, 119, 134)
 colour_body = (20, 23, 26)
 
 def write_tweet(date, tweet, rotate):
-    image = Image.new('RGBA', (1500, 1100), (255, 255, 255, 0)) # Change this to 255, 255, 255, 0 when saving
+    image = Image.new('RGBA', (1550, 1100), (255, 255, 255, 0))
     draw = ImageDraw.Draw(image)
-    draw.rectangle([(1, 1), (1499, 1099)], fill=None, outline='black')
+    # Draw border
+    # draw.rectangle([(1, 1), (1549, 1099)], fill=None, outline='black')
 
     # Set start 'margins'
     y_start = 60
@@ -91,8 +92,7 @@ if __name__ == "__main__":
         random.shuffle(tweets)
 
         # Iterate over dates
-        # while date <= end_date:
-        while count < 4:
+        while date <= end_date:
             tweet = tweets[count]
             # Increment count after accessing tweet, incase tweet is unwanted
             # Count may increase without date increasing
@@ -119,5 +119,6 @@ if __name__ == "__main__":
                 rotate = not rotate
             date += delta
 
+    print('Done!')
     if verbose:
         print('Count: {}'.format(count))
