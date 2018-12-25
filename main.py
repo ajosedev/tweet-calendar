@@ -66,8 +66,9 @@ def write_tweet(date, tweet, rotate):
         image = image.rotate(180)
 
     # Save image
-    print('Saving...')
-    image.save('images/{}.png'.format(date.strftime('%d-%m')))
+    filename = date.strftime('%Y-%m-%d')
+    print('Saving {}...'.format(filename))
+    image.save('images/{}.png'.format(filename))
 
 if __name__ == "__main__":
     verbose = 'verbose' in sys.argv
