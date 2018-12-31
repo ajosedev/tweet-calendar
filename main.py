@@ -6,12 +6,7 @@ from pprint import pprint
 from datetime import date, timedelta
 from PIL import Image, ImageDraw, ImageFont
 
-# Quote of the day calendar
-
-# Create a page (in a pdf?) with a single tweet
-#   4 tweets per page
-
-# Copy
+# Twitter header
 twitter_name = 'Thoughts of dog'
 twitter_handle = 'dog_feelings'
 
@@ -50,7 +45,6 @@ def write_tweet(date, tweet, rotate):
     # Write tweet content
     lines = textwrap.wrap(tweet, width=35)
 
-    # TODO - handle when line length is too long (e.g. when all caps)
     for line in lines:
         _, height = tweet_body_font.getsize(line)
         draw.text((x_text, y_text), line, fill=colour_body, font=tweet_body_font)
